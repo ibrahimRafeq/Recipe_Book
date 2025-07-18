@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/baseline_account_box_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/nameEt"
         android:layout_width="match_parent"
@@ -17,20 +26,7 @@
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <EditText
-        android:id="@+id/phoneEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:ems="10"
-        android:hint="Enter The Phone"
-        android:inputType="phone"
-        app:layout_constraintEnd_toEndOf="@+id/nameEt"
-        app:layout_constraintStart_toStartOf="@+id/nameEt"
-        app:layout_constraintTop_toBottomOf="@+id/nameEt"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:ignore="TouchTargetSizeCheck" />
 
 
@@ -42,9 +38,9 @@
         android:ems="10"
         android:hint="Enter An Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="@+id/phoneEt"
-        app:layout_constraintStart_toStartOf="@+id/phoneEt"
-        app:layout_constraintTop_toBottomOf="@+id/phoneEt"
+        app:layout_constraintEnd_toEndOf="@+id/nameEt"
+        app:layout_constraintStart_toStartOf="@+id/nameEt"
+        app:layout_constraintTop_toBottomOf="@+id/nameEt"
         tools:ignore="TouchTargetSizeCheck" />
 
 
@@ -61,14 +57,24 @@
         app:layout_constraintTop_toBottomOf="@+id/emailEt"
         tools:ignore="TouchTargetSizeCheck" />
 
+    <Spinner
+        android:id="@+id/countrySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/passwordEt"
+        app:layout_constraintStart_toStartOf="@+id/passwordEt"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEt" />
+
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEt" />
+        app:layout_constraintTop_toBottomOf="@+id/countrySpinner" />
 
     <TextView
         android:id="@+id/haveAccount"
