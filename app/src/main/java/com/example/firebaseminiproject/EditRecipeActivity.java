@@ -1,7 +1,10 @@
 package com.example.firebaseminiproject;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.firebaseminiproject.databinding.ActivityEditRecipeBinding;
@@ -11,10 +14,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class EditRecipeActivity extends AppCompatActivity {
     ActivityEditRecipeBinding binding;
     FirebaseFirestore firestore;
+    Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,35 +32,75 @@ public class EditRecipeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firestore = FirebaseFirestore.getInstance();
+        recipe = (Recipe) getIntent().getSerializableExtra("recipe");
 
+        if (recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
+            binding.ingredientsEt.setText(TextUtils.join(", ", recipe.getIngredients()));
+        } else {
+            binding.ingredientsEt.setText("");
+        }
 
-        firestore.collection("recipes")
-//                .whereEqualTo("title", "secondPost")   // (secondPost)يرجع البيانات حسب شرط معين والشرط هنا كان ان يتم جلب البيانات التي يكون فيها العنوان هو المنشور الثاني
-//                .orderBy("id")    //   (id)يرجع البيانات بالترتيب على حسب ال
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        binding.titleEt.setText("");
-                        binding.ingredientsEt.setText("");
-                        binding.stepsEt.setText("");
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Recipe recipe = document.toObject(Recipe.class);
-                        }
-                    }
-                });
+        if (recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
+            binding.stepsEt.setText(TextUtils.join(", ", recipe.getDescription()));
+        } else {
+            binding.stepsEt.setText("");
+        }
 
+        if (recipe != null) {
+            binding.titleEt.setText(recipe.getName());
+            binding.ingredientsEt.setText(TextUtils.join(", ", recipe.getIngredients()));
+//            binding.stepsEt.setText(TextUtils.join(", ", recipe.getDescription()));
+            binding.categoryEt.setText(recipe.getCategory());
+            binding.videoUrlEt.setText(recipe.getVideoUrl());
+        }
 
         binding.editRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = binding.titleEt.getText().toString().trim();
-                String ingredients = binding.ingredientsEt.getText().toString().trim();
-                String steps = binding.stepsEt.getText().toString().trim();
-                String category = binding.categoryEt.getText().toString().trim();
-                String videoUrl = binding.videoUrlEt.getText().toString().trim();
+            }
+        });
+
+        binding.editRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateRecipe();
             }
         });
 
     }
+
+    private void updateRecipe() {
+        String title = binding.titleEt.getText().toString().trim();
+        String ingredients = binding.ingredientsEt.getText().toString().trim();
+        String steps = binding.stepsEt.getText().toString().trim();
+        String category = binding.categoryEt.getText().toString().trim();
+        String videoUrl = binding.videoUrlEt.getText().toString().trim();
+
+        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(ingredients)
+                || TextUtils.isEmpty(steps) || TextUtils.isEmpty(category) || videoUrl.isEmpty()) {
+            Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<String> ingredientsList = Arrays.asList(ingredients.split("\\s*,\\s*"));
+        List<String> stepsList = Arrays.asList(steps.split("\\s*,\\s*"));
+
+        Map<String, Object> updatedRecipe = new HashMap<>();
+        updatedRecipe.put("name", title);
+        updatedRecipe.put("ingredients", ingredientsList);
+        updatedRecipe.put("description", stepsList);
+        updatedRecipe.put("category", category);
+        updatedRecipe.put("videoUrl", videoUrl);
+
+        firestore.collection("recipes").document(recipe.getId())
+                .update(updatedRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(EditRecipeActivity.this, "Recipe updated successfully ✅", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 }

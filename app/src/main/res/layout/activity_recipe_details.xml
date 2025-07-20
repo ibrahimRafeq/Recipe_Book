@@ -7,4 +7,109 @@
     android:layout_height="match_parent"
     tools:context=".RecipeDetailsActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/recipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="Recipe Image"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/recipeNameTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/categoryTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#777777"
+            android:textSize="16sp" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Ingredients:"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ingredientsTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="7"
+            android:overScrollMode="always"
+            android:scrollbars="vertical"
+            android:textColor="#444444"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Steps:"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/stepsTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="7"
+            android:scrollbars="vertical"
+            android:textColor="#444444"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/videoUrlTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:autoLink="web"
+            android:textColor="#1e88e5"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/editDeleteLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Edit"
+                android:padding="8dp"
+                android:src="@drawable/baseline_add_24" />
+
+            <ImageView
+                android:id="@+id/deleteIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Delete"
+                android:padding="8dp"
+                android:src="@drawable/baseline_add_24" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

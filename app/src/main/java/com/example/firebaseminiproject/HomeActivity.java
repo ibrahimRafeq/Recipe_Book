@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -38,17 +39,21 @@ public class HomeActivity extends AppCompatActivity {
         recipeList = new ArrayList<>();
         loadRecipesByCategory(selectedCategory);
 
-
         adapter = new RecipeAdapter(HomeActivity.this, recipeList, new RecipeAdapter.OnItemClicked() {
             @Override
             public void onClickEdit(int position) {
-                int id = recipeList.get(position).getId();
-                startActivity(new Intent(HomeActivity.this, EditRecipeActivity.class));
+                Recipe selectedRecipe  = recipeList.get(position);
+                Intent intent = new Intent(HomeActivity.this, EditRecipeActivity.class);
+                intent.putExtra("recipe", (Serializable) selectedRecipe);
+                startActivity(intent);
             }
 
             @Override
             public void onClickCard(int position) {
-                startActivity(new Intent(HomeActivity.this, RecipeDetailsActivity.class));
+                Recipe selectedRecipe  = recipeList.get(position);
+                Intent intent = new Intent(HomeActivity.this, RecipeDetailsActivity.class);
+                intent.putExtra("recipe", (Serializable) selectedRecipe);
+                startActivity(intent);
             }
         });
 
@@ -67,7 +72,7 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.shareNewRecipe.setOnClickListener(v ->
                 startActivity(new Intent(HomeActivity.this, AddRecipeActivity.class)));
-//        setupSearchView();
+        searchView();
     }
 
     private void loadRecipesByCategory(String category) {
@@ -78,34 +83,35 @@ public class HomeActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Recipe recipe = document.toObject(Recipe.class);
+                                    recipe.setId(document.getId());
                                     recipeList.add(recipe);
                                 }
                                 adapter.updateData(recipeList);
 
-                            }else {
+                            } else {
                                 Toast.makeText(HomeActivity.this, "failed", Toast.LENGTH_SHORT).show();
                             }
 
                         }
                     });
-        }else {
+        } else {
             firestore.collection("recipes")
                     .whereEqualTo("category", selectedCategory)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Recipe recipe = document.toObject(Recipe.class);
                                     recipeList.add(recipe);
                                 }
                                 adapter.updateData(recipeList);
 
-                            }else {
+                            } else {
                                 Toast.makeText(HomeActivity.this, "failed", Toast.LENGTH_SHORT).show();
                             }
 
@@ -116,9 +122,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
-
-        private void setupTabs() {
+    private void setupTabs() {
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("All"));
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Breakfast"));
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Lunch"));
@@ -143,27 +147,27 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-//    private void setupSearchView() {
-//        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                filterRecipes(query);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filterRecipes(newText);
-//                return true;
-//            }
-//        });
-//
-//        binding.searchView.setOnCloseListener(() -> {
-//            binding.searchView.setQuery("", false);
-//            filterRecipes("");
-//            return false;
-//        });
-//    }
+    private void searchView() {
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterRecipes(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterRecipes(newText);
+                return true;
+            }
+        });
+
+        binding.searchView.setOnCloseListener(() -> {
+            binding.searchView.setQuery("", false);
+            loadRecipesByCategory(selectedCategory); // لإعادة تحميل القائمة الأصلية
+            return false;
+        });
+    }
 
 
     public void filterRecipes(String query) {
@@ -178,4 +182,5 @@ public class HomeActivity extends AppCompatActivity {
         }
         adapter.updateData(filtered);
     }
+
 }

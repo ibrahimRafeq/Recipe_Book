@@ -4,13 +4,21 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.firebaseminiproject.databinding.ActivityProfileBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class ProfileActivity extends AppCompatActivity {
+    ActivityProfileBinding binding;
+    FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        binding = ActivityProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        firestore = FirebaseFirestore.getInstance();
+
 
     }
 }
