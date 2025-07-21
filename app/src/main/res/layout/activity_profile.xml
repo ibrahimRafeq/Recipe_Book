@@ -45,15 +45,16 @@
         android:id="@+id/recipesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/logoutBtm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#D32F2F"
         android:text="logout"
         android:textColor="#FFFFFF" />
-
 </LinearLayout>

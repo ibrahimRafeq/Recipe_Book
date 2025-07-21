@@ -6,8 +6,8 @@ import java.util.List;
 public class Recipe implements Serializable {
     private String id;
     private String name;
-    private List<String> ingredients;  // هنا قائمة وليس نص
-    private List<String> description;  // هنا قائمة وليس نص
+    private List<String> ingredients;
+    private List<String> description;
     private String category;
     private String videoUrl;
 

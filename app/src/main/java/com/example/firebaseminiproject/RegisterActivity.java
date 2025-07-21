@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -43,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser ();
+                registerUser();
             }
         });
 
@@ -53,12 +55,9 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
-
-
-
     }
 
-    private void registerUser () {
+    private void registerUser() {
         String name = binding.nameEt.getText().toString().trim();
         String email = binding.emailEt.getText().toString().trim();
         String password = binding.passwordEt.getText().toString().trim();
@@ -70,25 +69,37 @@ public class RegisterActivity extends AppCompatActivity {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     String userId = auth.getCurrentUser().getUid();
                     user = new User(name, email, password, country);
 
                     firestore.collection("users").document(userId).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name)
+                                        .build();
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                Toast.makeText(RegisterActivity.this, "تم تحديث اسم المستخدم", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+
                                 Toast.makeText(RegisterActivity.this, "Registration Successfully✅✅", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 finish();
-                            }else {
+                            } else {
                                 Toast.makeText(RegisterActivity.this, "Registration Failed❌⚠⚠", Toast.LENGTH_SHORT).show();
                             }
 
                         }
                     });
 
-                }else {
+                } else {
                     Toast.makeText(RegisterActivity.this, "Registration Failed❌", Toast.LENGTH_SHORT).show();
                 }
             }

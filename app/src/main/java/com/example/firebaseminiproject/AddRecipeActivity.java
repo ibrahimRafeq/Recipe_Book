@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.firebaseminiproject.databinding.ActivityAddRecipeBinding;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     ActivityAddRecipeBinding binding;
     FirebaseFirestore firestore;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         binding.addRecipeBtn.setOnClickListener(v -> addRecipe());
     }
@@ -40,6 +43,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // ✅ جلب معرف المستخدم
 
         Map<String, Object> recipe = new HashMap<>();
         recipe.put("name", title);
@@ -47,6 +51,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         recipe.put("steps", Arrays.asList(steps.split("\\s*,\\s*")));
         recipe.put("category", category);
         recipe.put("videoUrl", videoUrl);
+        recipe.put("userId", userId);
 
         firestore.collection("recipes").add(recipe)
                 .addOnCompleteListener(task -> {
