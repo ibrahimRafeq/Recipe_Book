@@ -26,7 +26,6 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private User user;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
