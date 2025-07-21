@@ -107,6 +107,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Recipe recipe = document.toObject(Recipe.class);
+//                                    recipe.setId(document.getId());
                                     recipeList.add(recipe);
                                 }
                                 adapter.updateData(recipeList);
