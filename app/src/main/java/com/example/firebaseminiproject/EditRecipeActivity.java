@@ -1,5 +1,6 @@
 package com.example.firebaseminiproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.firebaseminiproject.databinding.ActivityEditRecipeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,13 +59,15 @@ public class EditRecipeActivity extends AppCompatActivity {
         binding.editRecipeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateRecipe();
             }
         });
 
-        binding.editRecipeBtn.setOnClickListener(new View.OnClickListener() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateRecipe();
+                startActivity(new Intent(EditRecipeActivity.this, HomeActivity.class));
+                finish();
             }
         });
 
@@ -96,7 +100,7 @@ public class EditRecipeActivity extends AppCompatActivity {
                 .update(updatedRecipe).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(EditRecipeActivity.this, "Recipe updated successfully ✅", Toast.LENGTH_SHORT).show();
                         }
                     }

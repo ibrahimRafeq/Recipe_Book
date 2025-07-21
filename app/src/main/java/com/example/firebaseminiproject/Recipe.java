@@ -10,6 +10,16 @@ public class Recipe implements Serializable {
     private List<String> description;
     private String category;
     private String videoUrl;
+    
+    public Recipe() {
+
+    }
+
+    public Recipe(String name, String category, List<String> description) {
+        this.name = name;
+        this.category = category;
+        this.description = description;
+    }
 
     public List<String> getIngredients() {
         return ingredients;
@@ -27,22 +37,13 @@ public class Recipe implements Serializable {
         this.description = description;
     }
 
-    public Recipe(String name, String category, List<String> description) {
-        this.name = name;
-        this.category = category;
-        this.description = description;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-
-
     public void setCategory(String category) {
         this.category = category;
     }
-
 
     public String getVideoUrl() {
         return videoUrl;
@@ -52,11 +53,6 @@ public class Recipe implements Serializable {
         this.videoUrl = videoUrl;
     }
 
-    public Recipe() {
-
-    }
-
-
     public String getId() {
         return id;
     }
@@ -65,7 +61,12 @@ public class Recipe implements Serializable {
         this.id = id;
     }
 
-    public String getName() { return name; }
-    public String getCategory() { return category; }
+    public String getName() {
+        return name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
 }
 

@@ -2,6 +2,7 @@ package com.example.firebaseminiproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (currentUser != null) {
             binding.userName.setText(currentUser.getDisplayName());
             binding.userEmail.setText(currentUser.getEmail());
-            loadUserRecipes(currentUser.getUid());  // ⬅️ استدعاء لتحميل وصفاته
+            loadUserRecipes(currentUser.getUid());
         }
 
         adapter = new ProfileAdapter(ProfileActivity.this, recipes, new ProfileAdapter.OnItemClicked() {
@@ -58,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
                             adapter.notifyItemRemoved(position);
                         })
                         .addOnFailureListener(e -> {
-                            // يمكن عرض Toast في حالة الفشل
+                            Toast.makeText(ProfileActivity.this, "failed", Toast.LENGTH_SHORT).show();
                         });
             }
         });
@@ -81,13 +82,13 @@ public class ProfileActivity extends AppCompatActivity {
                     recipes.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         Recipe recipe = doc.toObject(Recipe.class);
-                        recipe.setId(doc.getId()); // تأكد أن لديك setId() في Recipe
+                        recipe.setId(doc.getId());
                         recipes.add(recipe);
                     }
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-                    // عرض رسالة فشل التحميل
+                    Toast.makeText(this, "failed", Toast.LENGTH_SHORT).show();
                 });
     }
 

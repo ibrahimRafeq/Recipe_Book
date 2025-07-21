@@ -107,7 +107,6 @@ public class HomeActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Recipe recipe = document.toObject(Recipe.class);
-//                                    recipe.setId(document.getId());
                                     recipeList.add(recipe);
                                 }
                                 adapter.updateData(recipeList);
@@ -165,7 +164,7 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.searchView.setOnCloseListener(() -> {
             binding.searchView.setQuery("", false);
-            loadRecipesByCategory(selectedCategory); // لإعادة تحميل القائمة الأصلية
+            loadRecipesByCategory(selectedCategory);
             return false;
         });
     }

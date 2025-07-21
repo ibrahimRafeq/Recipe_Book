@@ -84,10 +84,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.updateProfile(profileUpdates)
                                         .addOnCompleteListener(task2 -> {
                                             if (task2.isSuccessful()) {
-                                                Toast.makeText(RegisterActivity.this, "تم تحديث اسم المستخدم", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(RegisterActivity.this, "تم", Toast.LENGTH_SHORT).show();
                                             }
                                         });
-
 
                                 Toast.makeText(RegisterActivity.this, "Registration Successfully✅✅", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));

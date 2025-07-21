@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     private FirebaseAuth auth;
-    private FirebaseFirestore firestore;
     private SharedPreferences preferences;
 
 
@@ -31,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         preferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
 

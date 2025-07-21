@@ -2,8 +2,11 @@ package com.example.firebaseminiproject;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.firebaseminiproject.databinding.ActivityAddRecipeBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +31,12 @@ public class AddRecipeActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        binding.addRecipeBtn.setOnClickListener(v -> addRecipe());
+        binding.addRecipeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRecipe();
+            }
+        });
     }
 
     private void addRecipe() {
@@ -43,7 +51,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // ✅ جلب معرف المستخدم
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Map<String, Object> recipe = new HashMap<>();
         recipe.put("name", title);

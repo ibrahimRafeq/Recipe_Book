@@ -62,7 +62,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ItemRecipeBinding itemRecipeBinding;
 
@@ -74,6 +73,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public interface OnItemClicked {
         void onClickEdit(int position);
+
         void onClickCard(int position);
     }
 }
